@@ -1,0 +1,7 @@
+services:
+    supla.multipledomain.listener:
+        class: supla\multipledomain\event\main_listener
+        arguments:
+            - '@language'
+        tags:
+            - { name: event.listener }
