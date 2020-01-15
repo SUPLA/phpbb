@@ -1,21 +1,17 @@
 <?php
 /**
- *
  * Multiple domain support for forum.supla.org. An extension for the phpBB Forum Software package.
  *
  * @copyright (c) 2020, Przemek Zygmunt
- * @license GNU General Public License, version 2 (GPL-2.0)
- *
+ * @license   GNU General Public License, version 2 (GPL-2.0)
  */
 
-if (!defined('IN_PHPBB'))
-{
-	exit;
+if (!defined('IN_PHPBB')) {
+    exit;
 }
 
-if (empty($lang) || !is_array($lang))
-{
-	$lang = array();
+if (empty($lang) || !is_array($lang)) {
+    $lang = array();
 }
 
 // DEVELOPERS PLEASE NOTE
@@ -34,8 +30,10 @@ if (empty($lang) || !is_array($lang))
 // ’ » “ ” …
 //
 
-$lang = array_merge($lang, array(
+$lang = array_merge(
+    $lang, array(
 
-	'MULTIPLEDOMAIN_EVENT'		=> ' :: Multipledomain Event :: ',
+    'MULTIPLEDOMAIN_EVENT'        => ' :: Multipledomain Event :: ',
 
-));
+    )
+);
