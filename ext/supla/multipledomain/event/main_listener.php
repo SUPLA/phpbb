@@ -33,6 +33,7 @@ class main_listener implements EventSubscriberInterface
         'core.display_forums_modify_category_template_vars' => 'display_forums_modify_template_vars',
         'core.display_forums_before' => 'display_forums_before',
         'core.viewforum_modify_page_title' => 'viewforum_modify_page_title',
+        'core.viewtopic_modify_forum_id' => 'viewtopic_modify_forum_id',
         );
     }
 
@@ -51,6 +52,7 @@ class main_listener implements EventSubscriberInterface
                    'pl' => 'Polski',
                    'en' => 'English',
                    'es' => 'Español',
+                   'de' => 'Deutsch',
                    'default' => 'pl',
                    'base_domain' => 'forum.supla.org',
                 ];
@@ -128,6 +130,10 @@ class main_listener implements EventSubscriberInterface
         'lang_set' => 'common',
         );
         $event['lang_set_ext'] = $lang_set_ext;
+
+        if (@$event['user_data']['username_clean'] == 'anonymous' ) {
+            $event['user_lang_name'] = $this->domain_language_code();
+        }
     }
 
         /**
@@ -142,24 +148,39 @@ class main_listener implements EventSubscriberInterface
         }
     }
 
-    public function viewforum_modify_page_title($event)
+    public function redirect_to_the_proper_domain($data)
     {
-        $forum_data = @$event['forum_data'];
-        if (is_array($forum_data) ) {
-            $first_parent_name = $this->first_parent_name(@$forum_data['forum_parents']);
+        if (is_array($data) ) {
+            $first_parent_name = $this->first_parent_name(@$data['forum_parents']);
             if (!$first_parent_name) {
                   $first_parent_name = $forum_data['forum_name'];
             }
 
             if ($this->domain_parent_name != $first_parent_name) {
                    $dest_domain = $this->get_domain($first_parent_name);
-                if ($dest_domain) { 
+                if ($dest_domain) {
                     global $request;
                     redirect($dest_domain.$request->server('REQUEST_URI'), false, true);
                     exit;
                 }
-            } 
-        }
+            }
+        } 
+    }
+
+        /**
+         * @param \phpbb\event\data $event Event object
+         */
+    public function viewforum_modify_page_title($event)
+    {
+        $this->redirect_to_the_proper_domain(@$event['forum_data']);
+    }
+
+        /**
+         * @param \phpbb\event\data $event Event object
+         */
+    public function viewtopic_modify_forum_id($event)
+    {
+        $this->redirect_to_the_proper_domain(@$event['topic_data']);
     }
 
         /**
