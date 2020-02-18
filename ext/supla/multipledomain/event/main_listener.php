@@ -53,12 +53,20 @@ class main_listener implements EventSubscriberInterface
                    'en' => 'English',
                    'es' => 'Español',
                    'de' => 'Deutsch',
+                   'cz' => 'Čeština',
                    'default' => 'pl',
                    'base_domain' => 'forum.supla.org',
                 ];
 
                 $this->language_code = $this->domain_language_code();
                 $this->domain_parent_name = $this->cfg[$this->language_code];
+    }
+
+    private function ISO_Code($lng) {
+        if ($lng == 'cz') {
+            return 'cs';
+        }
+        return $lng;
     }
 
     private function domain_language_code()
@@ -132,7 +140,7 @@ class main_listener implements EventSubscriberInterface
         $event['lang_set_ext'] = $lang_set_ext;
 
         if (@$event['user_data']['username_clean'] == 'anonymous' ) {
-            $event['user_lang_name'] = $this->domain_language_code();
+            $event['user_lang_name'] = $this->ISO_Code($this->domain_language_code());
         }
     }
 
