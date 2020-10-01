@@ -54,6 +54,7 @@ class main_listener implements EventSubscriberInterface
                    'es' => 'Español',
                    'de' => 'Deutsch',
                    'cz' => 'Čeština',
+                   'ru' => 'Русский',
                    'default' => 'pl',
                    'base_domain' => 'forum.supla.org',
                 ];
